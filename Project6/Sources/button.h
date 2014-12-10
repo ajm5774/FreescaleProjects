@@ -13,3 +13,5 @@ short buttonState = 0;
 void initButton();
 
 void waitForButtonPushed();
+
+#endif
