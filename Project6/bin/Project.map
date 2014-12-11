@@ -15,6 +15,8 @@ FILE SECTION
 mc9s12dt256.c.o                         Model: BANKED,        Lang: ANSI-C
 main.c.o                                Model: BANKED,        Lang: ANSI-C
 Start12.c.o                             Model: BANKED,        Lang: ANSI-C
+EMBEDDED.C.o (ansibi.lib)               Model: BANKED,        Lang: ANSI-C
+PRINTF.C.o (ansibi.lib)                 Model: BANKED,        Lang: ANSI-C
 rtshc12.c.o (ansibi.lib)                Model: BANKED,        Lang: ANSI-C
 servo.c.o                               Model: BANKED,        Lang: ANSI-C
 
@@ -25,8 +27,8 @@ Entry point: 0xC000 (_Startup)
 _startupData is allocated at 0xC00B and uses 6 Bytes
 extern struct _tagStartup {
   unsigned nofZeroOut     1
-  _Range   pZeroOut       0x1100     28
-  _Copy    *toCopyDownBeg 0xC130
+  _Range   pZeroOut       0x1100     44
+  _Copy    *toCopyDownBeg 0xC245
 } _startupData;
 
 *********************************************************************************************
@@ -35,11 +37,13 @@ Section Name                    Size  Type     From       To       Segment
 ---------------------------------------------------------------------------------------------
 .init                             11     R     0xC000     0xC00A   ROM_C000
 .startData                        10     R     0xC00B     0xC014   ROM_C000
-NON_BANKED                       283     R     0xC015     0xC12F   ROM_C000
-.copy                             23     R     0xC130     0xC146   ROM_C000
-.text                            209     R   0x308000   0x3080D0   PAGE_30
+.rodata                          116     R     0xC015     0xC088   ROM_C000
+.rodata1                           4     R     0xC089     0xC08C   ROM_C000
+NON_BANKED                       440     R     0xC08D     0xC244   ROM_C000
+.copy                             27     R     0xC245     0xC25F   ROM_C000
+.text                           1614     R   0x308000   0x30864D   PAGE_30
 .stack                           256   R/W     0x1000     0x10FF   RAM
-.data                             22   R/W     0x1100     0x1115   RAM
+.data                             26   R/W     0x1100     0x1119   RAM
 .abs_section_8                     1   N/I        0x8        0x8   .absSeg0
 .abs_section_9                     1   N/I        0x9        0x9   .absSeg1
 .abs_section_a                     1   N/I        0xA        0xA   .absSeg2
@@ -445,13 +449,13 @@ NON_BANKED                       283     R     0xC015     0xC12F   ROM_C000
 .abs_section_2ae                   2   N/I      0x2AE      0x2AF   .absSeg402
 .abs_section_2be                   2   N/I      0x2BE      0x2BF   .absSeg403
 .abs_section_ffec                  2     R     0xFFEC     0xFFED   .absSeg404
-.bss                               2   R/W     0x1116     0x1117   RAM
-.common                            4   R/W     0x1118     0x111B   RAM
+.bss                              14   R/W     0x111A     0x1127   RAM
+.common                            4   R/W     0x1128     0x112B   RAM
 .vectSeg405_vect                   2     R     0xFFFE     0xFFFF   .vectSeg405
 
 Summary of section sizes per section type:
-READ_ONLY (R):         21C (dec:      540)
-READ_WRITE (R/W):      11C (dec:      284)
+READ_ONLY (R):         8B2 (dec:     2226)
+READ_WRITE (R/W):      12C (dec:      300)
 NO_INIT (N/I):         1D5 (dec:      469)
 
 *********************************************************************************************
@@ -504,7 +508,7 @@ MODULE:                 -- mc9s12dt256.c.o --
      _RTICTL                                     3B       1       1       0   .abs_section_3b
      _COPCTL                                     3C       1       1       0   .abs_section_3c
      _ARMCOP                                     3F       1       1       0   .abs_section_3f
-     _TIOS                                       40       1       1       0   .abs_section_40
+     _TIOS                                       40       1       1       1   .abs_section_40
      _CFORC                                      41       1       1       0   .abs_section_41
      _OC7M                                       42       1       1       0   .abs_section_42
      _OC7D                                       43       1       1       0   .abs_section_43
@@ -514,7 +518,7 @@ MODULE:                 -- mc9s12dt256.c.o --
      _TCTL2                                      49       1       1       0   .abs_section_49
      _TCTL3                                      4A       1       1       0   .abs_section_4a
      _TCTL4                                      4B       1       1       2   .abs_section_4b
-     _TIE                                        4C       1       1       1   .abs_section_4c
+     _TIE                                        4C       1       1       2   .abs_section_4c
      _TSCR2                                      4D       1       1       3   .abs_section_4d
      _TFLG1                                      4E       1       1       1   .abs_section_4e
      _TFLG2                                      4F       1       1       0   .abs_section_4f
@@ -543,11 +547,11 @@ MODULE:                 -- mc9s12dt256.c.o --
      _PWMSCLB                                    A9       1       1       0   .abs_section_a9
      _PWMSDN                                     C4       1       1       0   .abs_section_c4
      _SCI0CR1                                    CA       1       1       0   .abs_section_ca
-     _SCI0CR2                                    CB       1       1       0   .abs_section_cb
-     _SCI0SR1                                    CC       1       1       0   .abs_section_cc
+     _SCI0CR2                                    CB       1       1       2   .abs_section_cb
+     _SCI0SR1                                    CC       1       1       1   .abs_section_cc
      _SCI0SR2                                    CD       1       1       0   .abs_section_cd
      _SCI0DRH                                    CE       1       1       0   .abs_section_ce
-     _SCI0DRL                                    CF       1       1       0   .abs_section_cf
+     _SCI0DRL                                    CF       1       1       1   .abs_section_cf
      _SCI1CR1                                    D2       1       1       0   .abs_section_d2
      _SCI1CR2                                    D3       1       1       0   .abs_section_d3
      _SCI1SR1                                    D4       1       1       0   .abs_section_d4
@@ -806,8 +810,8 @@ MODULE:                 -- mc9s12dt256.c.o --
      _CAN4TXDSR7                                2BB       1       1       0   .abs_section_2bb
      _CAN4TXDLR                                 2BC       1       1       0   .abs_section_2bc
      _CAN4TXTBPR                                2BD       1       1       0   .abs_section_2bd
-     _PORTAB                                      0       2       2       0   .abs_section_0
-     _DDRAB                                       2       2       2       0   .abs_section_2
+     _PORTAB                                      0       2       2       4   .abs_section_0
+     _DDRAB                                       2       2       2       2   .abs_section_2
      _PARTID                                     1A       2       2       0   .abs_section_1a
      _TCNT                                       44       2       2       0   .abs_section_44
      _TC0                                        50       2       2       0   .abs_section_50
@@ -849,7 +853,7 @@ MODULE:                 -- mc9s12dt256.c.o --
      _PWMDTY23                                   BE       2       2       0   .abs_section_be
      _PWMDTY45                                   C0       2       2       0   .abs_section_c0
      _PWMDTY67                                   C2       2       2       0   .abs_section_c2
-     _SCI0BD                                     C8       2       2       0   .abs_section_c8
+     _SCI0BD                                     C8       2       2       1   .abs_section_c8
      _SCI1BD                                     D0       2       2       0   .abs_section_d0
      _FADDR                                     108       2       2       0   .abs_section_108
      _FDATA                                     10A       2       2       0   .abs_section_10a
@@ -873,61 +877,103 @@ MODULE:                 -- mc9s12dt256.c.o --
      _CAN4TXTSR                                 2BE       2       2       0   .abs_section_2be
 MODULE:                 -- main.c.o --
 - PROCEDURES:
-     InitializeTimer                         308000      18      24       2   .text       
-     ConfigurePer                            308018      22      34       2   .text       
-     InitializePwm                           30803A      2D      45       2   .text       
-     main                                    308067      2C      44       2   .text       
-     OC1_isr                                   C015       A      10       1   NON_BANKED  
+     InitializeSerialPort                    308000       C      12       2   .text       
+     InitPorts                               30800C       8       8       2   .text       
+     InitializeTimer                         308014      1E      30       2   .text       
+     ConfigurePer                            308032      22      34       2   .text       
+     InitializePwm                           308054      2D      45       2   .text       
+     checkParity                             308081      4A      74       2   .text       
+     TERMIO_PutChar                          3080CB       9       9       3   .text       
+     convertInput                            3080D4      28      40       2   .text       
+     POST                                    3080FC      2B      43       2   .text       
+     main                                    308127      3C      60       2   .text       
+     OC1_isr                                   C08D      40      64       1   NON_BANKED  
 - VARIABLES:
+     STRING..d..1                              C089       4       4       1   .rodata1    
      theServo                                  1100       A      10       3   .data       
-     hasInput                                  1116       2       2       3   .bss        
+     dataLength                                110A       2       2       1   .data       
+     firstInput                                110C       2       2       2   .data       
+     inputByte                                 111A       1       1       8   .bss        
+     readInput                                 111B       2       2       2   .bss        
+     parityBit                                 111D       2       2       3   .bss        
+     setInput                                  111F       2       2       3   .bss        
      _Vector_9                                 FFEC       2       2       0   .abs_section_ffec
-     clkafreq                                  1118       4       4       5   .common     
+     clkafreq                                  1128       4       4       5   .common     
 MODULE:                 -- Start12.c.o --
 - PROCEDURES:
-     Init                                    308093      29      41       2   .text       
+     Init                                    308163      29      41       2   .text       
      _Startup                                  C000       B      11       0   .init       
 - VARIABLES:
      _startupData                              C00B       6       6       3   .startData  
 - LABELS:
      __SEG_END_SSTACK                          1100       0       0       1               
+MODULE:                 -- EMBEDDED.C.o (ansibi.lib) --
+- PROCEDURES:
+     printf                                  30818C      17      23       2   .text       
+- VARIABLES:
+MODULE:                 -- PRINTF.C.o (ansibi.lib) --
+- PROCEDURES:
+     vprintf                                 3081A3     47B    1147      57   .text       
+     _out                                    30861E       C      12       2   .text       
+     set_printf                              30862A       F      15       2   .text       
+- VARIABLES:
+     pow10                                     C015      28      40       4   .rodata     
+     pow16                                     C03D      20      32       4   .rodata     
+     pow8                                      C05D      2C      44       4   .rodata     
+     pbuf                                      1121       7       7      11   .bss        
 MODULE:                 -- rtshc12.c.o (ansibi.lib) --
 - PROCEDURES:
-     _LMULU16x32                               C01F       F      15       1   NON_BANKED  
-     _lDivMod                                  C02E      BE     190       2   NON_BANKED  
-     _NEG_P                                    C0EC       F      15       4   NON_BANKED  
-     _LDIVS                                    C0FB      35      53       1   NON_BANKED  
+     _BSHRU                                    C0CD       8       8       1   NON_BANKED  
+     _LCMP_P                                   C0D5      15      21       3   NON_BANKED  
+     _LNEG                                     C0EA       D      13       1   NON_BANKED  
+     _LMULU16x32                               C0F7       F      15       1   NON_BANKED  
+     _lDivMod                                  C106      BE     190       2   NON_BANKED  
+     _NEG_P                                    C1C4       F      15       4   NON_BANKED  
+     _LDIVS                                    C1D3      35      53       1   NON_BANKED  
+     _ILSEXT                                   C208       7       7       2   NON_BANKED  
+     _CASE_DIRECT_BYTE                         C20F       5       5       1   NON_BANKED  
+     _CASE_SEARCH_8                            C214      17      23       1   NON_BANKED  
+     _CASE_SEARCH_8_BYTE                       C22B      1A      26       1   NON_BANKED  
 - VARIABLES:
 MODULE:                 -- servo.c.o --
 - PROCEDURES:
-     mov                                     3080BC      15      21       4   .text       
+     mov                                     308639      15      21       2   .text       
 - VARIABLES:
-     positionToPWM                             110A       C      12       1   .data       
+     positionToPWM                             110E       C      12       1   .data       
 
 *********************************************************************************************
 MODULE STATISTIC
   Name                                      Data   Code  Const
 ---------------------------------------------------------------------------------------------
   mc9s12dt256.c.o                            469      0      0
-  main.c.o                                    16    157      2
+  main.c.o                                    25    419      6
   Start12.c.o                                  0     52      0
-  rtshc12.c.o (ansibi.lib)                     0    273      0
+  EMBEDDED.C.o (ansibi.lib)                    0     23      0
+  PRINTF.C.o (ansibi.lib)                      7   1174    116
+  rtshc12.c.o (ansibi.lib)                     0    376      0
   servo.c.o                                   12     21      0
-  other                                      256     12     23
+  other                                      256     12     27
 
 *********************************************************************************************
 SECTION USE IN OBJECT-ALLOCATION SECTION
 ---------------------------------------------------------------------------------------------
 SECTION: ".text"
-  InitializeTimer ConfigurePer InitializePwm main Init mov 
+  InitializeSerialPort InitPorts InitializeTimer ConfigurePer InitializePwm 
+  checkParity TERMIO_PutChar convertInput POST main Init printf vprintf _out 
+  set_printf mov 
 SECTION: ".data"
-  theServo positionToPWM 
+  theServo dataLength firstInput positionToPWM 
 SECTION: ".bss"
-  hasInput 
+  inputByte readInput parityBit setInput pbuf 
 SECTION: ".init"
   _Startup 
+SECTION: ".rodata"
+  pow10 pow16 pow8 
+SECTION: ".rodata1"
+  STRING..d..1 
 SECTION: "NON_BANKED"
-  OC1_isr _LMULU16x32 _lDivMod _NEG_P _LDIVS 
+  OC1_isr _BSHRU _LCMP_P _LNEG _LMULU16x32 _lDivMod _NEG_P _LDIVS _ILSEXT 
+  _CASE_DIRECT_BYTE _CASE_SEARCH_8 _CASE_SEARCH_8_BYTE 
 SECTION: ".abs_section_8"
   _PORTE 
 SECTION: ".abs_section_9"
@@ -1745,8 +1791,8 @@ SECTION: ".common"
 OBJECT LIST SORTED BY ADDRESS
      Name                                      Addr   hSize   dSize     Ref    Section   RLIB
 ---------------------------------------------------------------------------------------------
-     _PORTAB                                      0       2       2       0   .abs_section_0
-     _DDRAB                                       2       2       2       0   .abs_section_2
+     _PORTAB                                      0       2       2       4   .abs_section_0
+     _DDRAB                                       2       2       2       2   .abs_section_2
      _PORTE                                       8       1       1       0   .abs_section_8
      _DDRE                                        9       1       1       0   .abs_section_9
      _PEAR                                        A       1       1       0   .abs_section_a
@@ -1785,7 +1831,7 @@ OBJECT LIST SORTED BY ADDRESS
      _RTICTL                                     3B       1       1       0   .abs_section_3b
      _COPCTL                                     3C       1       1       0   .abs_section_3c
      _ARMCOP                                     3F       1       1       0   .abs_section_3f
-     _TIOS                                       40       1       1       0   .abs_section_40
+     _TIOS                                       40       1       1       1   .abs_section_40
      _CFORC                                      41       1       1       0   .abs_section_41
      _OC7M                                       42       1       1       0   .abs_section_42
      _OC7D                                       43       1       1       0   .abs_section_43
@@ -1796,7 +1842,7 @@ OBJECT LIST SORTED BY ADDRESS
      _TCTL2                                      49       1       1       0   .abs_section_49
      _TCTL3                                      4A       1       1       0   .abs_section_4a
      _TCTL4                                      4B       1       1       2   .abs_section_4b
-     _TIE                                        4C       1       1       1   .abs_section_4c
+     _TIE                                        4C       1       1       2   .abs_section_4c
      _TSCR2                                      4D       1       1       3   .abs_section_4d
      _TFLG1                                      4E       1       1       1   .abs_section_4e
      _TFLG2                                      4F       1       1       0   .abs_section_4f
@@ -1863,13 +1909,13 @@ OBJECT LIST SORTED BY ADDRESS
      _PWMDTY45                                   C0       2       2       0   .abs_section_c0
      _PWMDTY67                                   C2       2       2       0   .abs_section_c2
      _PWMSDN                                     C4       1       1       0   .abs_section_c4
-     _SCI0BD                                     C8       2       2       0   .abs_section_c8
+     _SCI0BD                                     C8       2       2       1   .abs_section_c8
      _SCI0CR1                                    CA       1       1       0   .abs_section_ca
-     _SCI0CR2                                    CB       1       1       0   .abs_section_cb
-     _SCI0SR1                                    CC       1       1       0   .abs_section_cc
+     _SCI0CR2                                    CB       1       1       2   .abs_section_cb
+     _SCI0SR1                                    CC       1       1       1   .abs_section_cc
      _SCI0SR2                                    CD       1       1       0   .abs_section_cd
      _SCI0DRH                                    CE       1       1       0   .abs_section_ce
-     _SCI0DRL                                    CF       1       1       0   .abs_section_cf
+     _SCI0DRL                                    CF       1       1       1   .abs_section_cf
      _SCI1BD                                     D0       2       2       0   .abs_section_d0
      _SCI1CR1                                    D2       1       1       0   .abs_section_d2
      _SCI1CR2                                    D3       1       1       0   .abs_section_d3
@@ -2150,57 +2196,100 @@ OBJECT LIST SORTED BY ADDRESS
      _CAN4TXTBPR                                2BD       1       1       0   .abs_section_2bd
      _CAN4TXTSR                                 2BE       2       2       0   .abs_section_2be
      theServo                                  1100       A      10       3   .data       
-     positionToPWM                             110A       C      12       1   .data       
-     hasInput                                  1116       2       2       3   .bss        
-     clkafreq                                  1118       4       4       5   .common     
+     dataLength                                110A       2       2       1   .data       
+     firstInput                                110C       2       2       2   .data       
+     positionToPWM                             110E       C      12       1   .data       
+     inputByte                                 111A       1       1       8   .bss        
+     readInput                                 111B       2       2       2   .bss        
+     parityBit                                 111D       2       2       3   .bss        
+     setInput                                  111F       2       2       3   .bss        
+     pbuf                                      1121       7       7      11   .bss        
+     clkafreq                                  1128       4       4       5   .common     
      _Startup                                  C000       B      11       0   .init       
-     OC1_isr                                   C015       A      10       1   NON_BANKED  
-     _LMULU16x32                               C01F       F      15       1   NON_BANKED  
-     _lDivMod                                  C02E      BE     190       2   NON_BANKED  
-     _NEG_P                                    C0EC       F      15       4   NON_BANKED  
-     _LDIVS                                    C0FB      35      53       1   NON_BANKED  
+     pow10                                     C015      28      40       4   .rodata     
+     pow16                                     C03D      20      32       4   .rodata     
+     pow8                                      C05D      2C      44       4   .rodata     
+     STRING..d..1                              C089       4       4       1   .rodata1    
+     OC1_isr                                   C08D      40      64       1   NON_BANKED  
+     _BSHRU                                    C0CD       8       8       1   NON_BANKED  
+     _LCMP_P                                   C0D5      15      21       3   NON_BANKED  
+     _LNEG                                     C0EA       D      13       1   NON_BANKED  
+     _LMULU16x32                               C0F7       F      15       1   NON_BANKED  
+     _lDivMod                                  C106      BE     190       2   NON_BANKED  
+     _NEG_P                                    C1C4       F      15       4   NON_BANKED  
+     _LDIVS                                    C1D3      35      53       1   NON_BANKED  
+     _ILSEXT                                   C208       7       7       2   NON_BANKED  
+     _CASE_DIRECT_BYTE                         C20F       5       5       1   NON_BANKED  
+     _CASE_SEARCH_8                            C214      17      23       1   NON_BANKED  
+     _CASE_SEARCH_8_BYTE                       C22B      1A      26       1   NON_BANKED  
      _Vector_9                                 FFEC       2       2       0   .abs_section_ffec
-     InitializeTimer                         308000      18      24       2   .text       
-     ConfigurePer                            308018      22      34       2   .text       
-     InitializePwm                           30803A      2D      45       2   .text       
-     main                                    308067      2C      44       2   .text       
-     Init                                    308093      29      41       2   .text       
-     mov                                     3080BC      15      21       4   .text       
+     InitializeSerialPort                    308000       C      12       2   .text       
+     InitPorts                               30800C       8       8       2   .text       
+     InitializeTimer                         308014      1E      30       2   .text       
+     ConfigurePer                            308032      22      34       2   .text       
+     InitializePwm                           308054      2D      45       2   .text       
+     checkParity                             308081      4A      74       2   .text       
+     TERMIO_PutChar                          3080CB       9       9       3   .text       
+     convertInput                            3080D4      28      40       2   .text       
+     POST                                    3080FC      2B      43       2   .text       
+     main                                    308127      3C      60       2   .text       
+     Init                                    308163      29      41       2   .text       
+     printf                                  30818C      17      23       2   .text       
+     vprintf                                 3081A3     47B    1147      57   .text       
+     _out                                    30861E       C      12       2   .text       
+     set_printf                              30862A       F      15       2   .text       
+     mov                                     308639      15      21       2   .text       
 
 *********************************************************************************************
 UNUSED-OBJECTS SECTION
 ---------------------------------------------------------------------------------------------
 NOT USED PROCEDURES
-main.c.o:
-  ack 
+EMBEDDED.C.o (ansibi.lib):
+  scanf gets puts fopen fflush fclose fprintf fputs fputc fgetc remove clock 
+  abort exit 
+PRINTF.C.o (ansibi.lib):
+  deposit_char sprintf vsprintf 
 rtshc12.c.o (ansibi.lib):
-  _BSHL _BSHRS _BSHRU _BDIVMODU _BDIVMODS _ISHL _ISHRU _ISHRS _LSHL _LSHRU 
-  _LSHRS _LADD _LSUB _LAND _LOR _LXOR _LCMP _LCMP_P _LCMP_PP _LNEG _LCOM _LINC 
-  _LDEC _LMUL _LMULS16x32 _LDIVU _LMODU _LMODS _ILSEXT _COPY _CASE_DIRECT 
-  _CASE_DIRECT_BYTE _CASE_CHECKED _CASE_CHECKED_BYTE _CASE_SEARCH 
-  _CASE_SEARCH_BYTE _CASE_SEARCH_8 _CASE_SEARCH_8_BYTE _FCALL _FPCMP 
+  _BSHL _BSHRS _BDIVMODU _BDIVMODS _ISHL _ISHRU _ISHRS _LSHL _LSHRU _LSHRS 
+  _LADD _LSUB _LAND _LOR _LXOR _LCMP _LCMP_PP _LCOM _LINC _LDEC _LMUL 
+  _LMULS16x32 _LDIVU _LMODU _LMODS _COPY _CASE_DIRECT _CASE_CHECKED 
+  _CASE_CHECKED_BYTE _CASE_SEARCH _CASE_SEARCH_BYTE _FCALL _FPCMP 
 NOT USED VARIABLES
 main.c.o:
-  BUTTONID buttonState inputByte 
+  BUTTONID buttonState 
+EMBEDDED.C.o (ansibi.lib):
+  STRING..1 
 rtshc12.c.o (ansibi.lib):
   _PowOfTwo_8 _PowOfTwo_16 _PowOfTwo_32 errno 
 
 *********************************************************************************************
 COPYDOWN SECTION
 ---------------------------------------------------------------------------------------------
-------- ROM-ADDRESS: 0xC130 ---- SIZE       4 ---
+------- ROM-ADDRESS: 0xC245 ---- SIZE       4 ---
 Filling bytes inserted
- 00111105
-------- ROM-ADDRESS: 0xC134 ---- RAM-ADDRESS: 0x1105 ---- SIZE       5 ---
+ 00151105
+------- ROM-ADDRESS: 0xC249 ---- RAM-ADDRESS: 0x1105 ---- SIZE       5 ---
 Name of initialized Object : theServo:5
  BC00B40001
-------- ROM-ADDRESS: 0xC139 ---- SIZE       1 ---
+------- ROM-ADDRESS: 0xC24E ---- SIZE       1 ---
 Filling bytes inserted
  00
-------- ROM-ADDRESS: 0xC13A ---- RAM-ADDRESS: 0x110B ---- SIZE      11 ---
+------- ROM-ADDRESS: 0xC24F ---- RAM-ADDRESS: 0x110B ---- SIZE       1 ---
+Name of initialized Object : dataLength:1
+ 05
+------- ROM-ADDRESS: 0xC250 ---- SIZE       1 ---
+Filling bytes inserted
+ 00
+------- ROM-ADDRESS: 0xC251 ---- RAM-ADDRESS: 0x110D ---- SIZE       1 ---
+Name of initialized Object : firstInput:1
+ 01
+------- ROM-ADDRESS: 0xC252 ---- SIZE       1 ---
+Filling bytes inserted
+ 00
+------- ROM-ADDRESS: 0xC253 ---- RAM-ADDRESS: 0x110F ---- SIZE      11 ---
 Name of initialized Object : positionToPWM:1
  050009000D 0011001500 19
-------- ROM-ADDRESS: 0xC145 ---- SIZE       2 ---
+------- ROM-ADDRESS: 0xC25E ---- SIZE       2 ---
 Filling bytes inserted
  0000
 
@@ -2208,16 +2297,30 @@ Filling bytes inserted
 OBJECT-DEPENDENCIES SECTION
 ---------------------------------------------------------------------------------------------
 _Startup                  USES __SEG_END_SSTACK Init main 
-OC1_isr                   USES _TFLG1 hasInput 
+OC1_isr                   USES _TFLG1 readInput _PORTAB inputByte parityBit 
+                                setInput firstInput 
 _LDIVS                    USES _NEG_P _lDivMod 
 _Vector_9                 USES OC1_isr 
-InitializeTimer           USES _TIE _TSCR2 _TCTL4 _TSCR1 
+InitializeSerialPort      USES _SCI0BD _SCI0CR2 
+InitPorts                 USES _DDRAB 
+InitializeTimer           USES _TIE _TSCR2 _TIOS _TCTL4 _TSCR1 
 ConfigurePer              USES clkafreq _LMULU16x32 _LDIVS 
 InitializePwm             USES _PWME _PWMPOL _PWMCLK _PWMPRCLK _PWMSCLA 
                                 clkafreq theServo ConfigurePer 
-main                      USES InitializeTimer InitializePwm hasInput theServo 
-                                mov 
+checkParity               USES inputByte _BSHRU dataLength parityBit 
+TERMIO_PutChar            USES _SCI0SR1 _SCI0DRL 
+POST                      USES firstInput inputByte STRING..d..1 printf 
+                                theServo 
+main                      USES InitializeSerialPort InitPorts InitializeTimer 
+                                InitializePwm POST setInput checkParity theServo inputByte 
+                                convertInput mov 
 Init                      USES _startupData 
+printf                    USES TERMIO_PutChar set_printf vprintf 
+vprintf                   USES vprintf _CASE_SEARCH_8_BYTE _CASE_DIRECT_BYTE 
+                                _CASE_SEARCH_8 pbuf _ILSEXT _LNEG pow8 _LCMP_P pow16 pow10 
+                                _out 
+_out                      USES pbuf 
+set_printf                USES pbuf 
 mov                       USES positionToPWM 
 
 *********************************************************************************************
@@ -2227,6 +2330,10 @@ DEPENDENCY TREE
  | 
  +- main                
  |  | 
+ |  +- InitializeSerialPort
+ |  |    
+ |  +- InitPorts           
+ |  |    
  |  +- InitializeTimer     
  |  |    
  |  +- InitializePwm       
@@ -2241,6 +2348,36 @@ DEPENDENCY TREE
  |  |        |    
  |  |        +- _lDivMod            
  |  |             
+ |  +- POST                
+ |  |  | 
+ |  |  +- printf              
+ |  |     | 
+ |  |     +- TERMIO_PutChar      
+ |  |     |    
+ |  |     +- set_printf          
+ |  |     |    
+ |  |     +- vprintf             
+ |  |        | 
+ |  |        +- _CASE_SEARCH_8_BYTE 
+ |  |        |    
+ |  |        +- _CASE_DIRECT_BYTE   
+ |  |        |    
+ |  |        +- _CASE_SEARCH_8      
+ |  |        |    
+ |  |        +- _ILSEXT             
+ |  |        |    
+ |  |        +- _LNEG               
+ |  |        |    
+ |  |        +- _LCMP_P             
+ |  |        |    
+ |  |        +- _out                
+ |  |             
+ |  +- checkParity         
+ |  |  | 
+ |  |  +- _BSHRU              
+ |  |       
+ |  +- convertInput        
+ |  |    
  |  +- mov                 
  |       
  +- _Startup            
@@ -2259,6 +2396,6 @@ STATISTIC SECTION
 
 ExeFile:
 --------
-Number of blocks to be downloaded: 7
-Total size of all blocks to be downloaded: 540
+Number of blocks to be downloaded: 6
+Total size of all blocks to be downloaded: 2226
 
